@@ -1,19 +1,17 @@
-from sklearn.model_selection import KFold
 import numpy as np
+
+from models.regressor.svr import Model_Linear_SVR
 from models.regressor.svr import Model_RBF_SVR
+
 from .kfold import KFoldCrossValidation
+
 from performer.supervised_learning_performer import SlidingWindowPerformer
+
 from util.parameters import ModelsIperParameters
 from util.evaluation import ForecastErrorEvaluation
 
-from synthetic.test_suite import TestSuite
-from synthetic.util import min_max_transform
-from models.regressor.svr import Model_Linear_SVR
-from models.regressor.svr import Model_RBF_SVR
 
-from models.regressor.svr import Model_Linear_SVR
-
-class KFoldCrossValidation_Linear_SVR(KFoldCrossValidation):
+class GridSearchKFoldCV_Linear_SVR(KFoldCrossValidation):
   
   def __init__(self, series, target_length=1, target_offset=1, kfolds=10):
     self.series = series
@@ -68,7 +66,7 @@ class KFoldCrossValidation_Linear_SVR(KFoldCrossValidation):
             ])
 
 
-class KFoldCrossValidation_RBF_SVR(KFoldCrossValidation):
+class GridSearchKFoldCV_RBF_SVR(KFoldCrossValidation):
   
   def __init__(self, series, target_length=1, target_offset=1, kfolds=10):
     self.series = series

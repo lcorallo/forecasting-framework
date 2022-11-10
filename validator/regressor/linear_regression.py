@@ -6,7 +6,7 @@ from performer.supervised_learning_performer import SlidingWindowPerformer
 from util.parameters import ModelsIperParameters
 from util.evaluation import ForecastErrorEvaluation
 
-class KFoldCrossValidation_LinearRegression(KFoldCrossValidation):
+class GridSearchKFoldCV_LinearRegression(KFoldCrossValidation):
 
   def __init__(self, series, target_length=1, target_offset=1, kfolds=10):
     self.series = series
