@@ -1,2 +1,3 @@
 from .train_test_performer import TrainTestPerformer
 from .supervised_learning_performer import SlidingWindowPerformer
+from .transformer import MinMaxTransformer
