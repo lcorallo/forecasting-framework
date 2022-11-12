@@ -44,7 +44,7 @@ class GridSearchKFoldCV_Linear_SVR(KFoldCrossValidation):
             for i in range(len(X_trains)):
               y = Y_validations[i]
 
-              model_svr_linear = Model_Linear_SVR(C = ind_c, epsilon = ind_epsilon, fit_intercept = ind_fit_intercept)
+              model_svr_linear = Model_Linear_SVR(input_size= X_trains[i].shape[1], C = ind_c, epsilon = ind_epsilon, fit_intercept = ind_fit_intercept)
               model_svr_linear.__train__(X_train=X_trains[i], Y_train=Y_trains[i])
               yhat = model_svr_linear.__test__(X_test=X_validations[i])
               
@@ -99,7 +99,7 @@ class GridSearchKFoldCV_RBF_SVR(KFoldCrossValidation):
             for i in range(len(X_trains)):
               y = Y_validations[i]
 
-              model_svr_rbf = Model_RBF_SVR(C = ind_c, epsilon = ind_epsilon, gamma = ind_gamma)
+              model_svr_rbf = Model_RBF_SVR(input_size= X_trains[i].shape[1], C = ind_c, epsilon = ind_epsilon, gamma = ind_gamma)
               model_svr_rbf.__train__(X_train=X_trains[i], Y_train=Y_trains[i])
               yhat = model_svr_rbf.__test__(X_test=X_validations[i])
               

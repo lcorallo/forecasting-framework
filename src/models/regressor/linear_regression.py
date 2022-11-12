@@ -10,7 +10,8 @@ from sklearn.linear_model import LinearRegression
 class Model_LinearRegression(IRegressor):
     model = None;
 
-    def __init__(self):
+    def __init__(self, input_size):
+        self.input_size = input_size
         self.model = LinearRegression()
 
     def __get_model__(self):
@@ -24,4 +25,7 @@ class Model_LinearRegression(IRegressor):
     def __test__(self, X_test):
         yhat_test = self.model.predict(X_test)
         return yhat_test
+
+    def __identify__(self):
+        return "AR_LinearRegression("+str(self.input_size)+");"
 

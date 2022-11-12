@@ -32,7 +32,7 @@ class GridSearchKFoldCV_LinearRegression(KFoldCrossValidation):
       for i in range(len(X_trains)):
         y = Y_validations[i]
 
-        model_linear_regression = Model_LinearRegression()
+        model_linear_regression = Model_LinearRegression(input_size=X_trains[i].shape[1])
         model_linear_regression.__train__(X_train=X_trains[i], Y_train=Y_trains[i])
         yhat = model_linear_regression.__test__(X_test=X_validations[i])
 

@@ -111,9 +111,9 @@ class GridSearch_ConvolutionalNeuralNetwork():
                             conv1_out = 6,
                             conv1_kernel = 36,
                             conv2_kernel = 12,
-                            layers_fc = 2,
-                            linear = 180,
-                            dropout = 0.2
+                            layers_fc = ind_linear,
+                            linear = ind_neuron,
+                            dropout = ind_dropout
                         )
                         
                         trainer = Trainer_NeuralNetwork(training_parameters = self.training_parameters)
@@ -194,7 +194,6 @@ class GridSearch_LongShortTermNeuralNetwork():
                         trainer = Trainer_NeuralNetwork(training_parameters = self.training_parameters)
 
                         model, _ = trainer.__train__(model = model, x = X_train, y = Y_train, error_performer = error_performer)
-            
                         model.eval()
                         with torch.no_grad():
                             yhat = model(X_test)

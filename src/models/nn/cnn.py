@@ -2,9 +2,15 @@ import numpy as np
 import torch
 from torch import nn, optim
 import torch.nn.functional as F
+from .interface import INeuralNetwork
 
-class CNNSemilinearPredictor(nn.Module):
+class CNNSemilinearPredictor(INeuralNetwork):
     def __init__(self, n_inp, layers_fc = 2, dropout=0.2, linear = 180, conv1_out = 6, conv1_kernel = 36, conv2_kernel = 12, n_out = 1):
+        self.input_size = n_inp
+        self.layers_fc = layers_fc
+        self.linear = linear
+        self.dropout = dropout
+        
         super(CNNSemilinearPredictor, self).__init__()
         self.pool = nn.MaxPool1d(kernel_size=2)
         self.conv1 = nn.Conv1d(
@@ -46,6 +52,9 @@ class CNNSemilinearPredictor(nn.Module):
         x = self.fe_stack(x)
         y = self.dm_stack(x, train)
         return y
+    
+    def __identify__(self):
+        return "AR_ConvolutionalNeuralNetwork("+str(self.input_size)+")("+str(self.layers_fc)+","+str(self.linear)+","+str(self.dropout)+");"
 
 
 #TODO: One Step Forecasting               V
@@ -95,7 +104,6 @@ class Model_ConvolutionalSemilinearNN():
             self.yhat_test = self.model(X_test)
             test_loss = self.error_fun(Y_test, self.yhat_test)
             return test_loss.item()
-
 
     def __train__(self, X_train, Y_train, X_test, Y_test):
         self.model = CNNSemilinearPredictor(

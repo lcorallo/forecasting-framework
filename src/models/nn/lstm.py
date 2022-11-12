@@ -1,14 +1,16 @@
 import torch
 from torch import nn, optim
+from .interface import INeuralNetwork
 
-class LSTMPredictor(nn.Module):
+class LSTMPredictor(INeuralNetwork):
 
     def __init__(self, input_dim, output_dim, num_layers=2, hidden=128, dropout=.1):
         super(LSTMPredictor, self).__init__()
+        self.input_size = input_dim
         self.hidden = hidden
         self.num_layers = num_layers
-        
-        self.input_dim = input_dim
+        self.dropout = dropout
+
         self.lstm = nn.LSTM(
             input_size = input_dim,
             hidden_size = self.hidden,
@@ -22,6 +24,9 @@ class LSTMPredictor(nn.Module):
         y_lstm, _ = self.lstm(sequences, (h0, c0))
         y_pred = self.linear(y_lstm)
         return y_pred
+
+    def __identify__(self):
+        return "AR_LongShortTermMemoryNeuralNetwork("+str(self.input_size)+")("+str(self.num_layers)+","+str(self.hidden)+","+str(self.dropout)+");"
 
 
 
