@@ -18,20 +18,23 @@ class Model_Linear_SVR(IModel):
     cross_validator = None;
     error_fun = None;
 
-    def __init__(self, error_fun):
+    def __init__(self, error_fun, C=None, epsilon=None, fit_intercept=None):
         self.error_fun = error_fun
         self.model = LinearSVR()
-        self.cross_validator = GridSearchCV(
-            estimator=self.model,
-            param_grid={
-                'C': [0.05, 0.1, 1, 2, 4, 8, 10],
-                'epsilon': [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 5],
-                'fit_intercept': [True, False]
-            },
-            cv=10,
-            n_jobs=-1,
-            scoring=make_scorer(error_fun, greater_is_better=False)
-        )
+        if(C is not None and epsilon is not None and fit_intercept is not None):
+            self.model = LinearSVR(C=C, epsilon=epsilon, fit_intercept=fit_intercept)
+        else:
+            self.cross_validator = GridSearchCV(
+                estimator=self.model,
+                param_grid={
+                    'C': [0.05, 0.1, 1, 2, 4, 8, 10],
+                    'epsilon': [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 5],
+                    'fit_intercept': [True, False]
+                },
+                cv=10,
+                n_jobs=-1,
+                scoring=make_scorer(error_fun, greater_is_better=False)
+            )
 
     def __get_error_train__(self):
         if(self.error_train is None):
@@ -53,10 +56,11 @@ class Model_Linear_SVR(IModel):
         return self.yhat_test
 
     def __train__(self, X_train, Y_train):
-        grid_result = self.cross_validator.fit(X_train, Y_train)
-        best_params = grid_result.best_params_
-
-        self.model = LinearSVR(C=best_params['C'], epsilon=best_params['epsilon'], fit_intercept=best_params['fit_intercept'])
+        if (self.cross_validator is not None):
+            grid_result = self.cross_validator.fit(X_train, Y_train)
+            best_params = grid_result.best_params_
+            self.model = LinearSVR(C=best_params['C'], epsilon=best_params['epsilon'], fit_intercept=best_params['fit_intercept'])
+    
         self.model = self.model.fit(X_train, Y_train)
         yhat_train = self.model.predict(X_train)
         self.error_train = self.error_fun(Y_train, yhat_train)
@@ -81,20 +85,23 @@ class Model_RBF_SVR(IModel):
     cross_validator = None;
     error_fun = None;
 
-    def __init__(self, error_fun):
+    def __init__(self, error_fun, C=None, epsilon=None, gamma=None):
         self.error_fun = error_fun
-        self.model = SVR(kernel="rbf")
-        self.cross_validator = GridSearchCV(
-            estimator=self.model,
-            param_grid={
-                'C': [0.05, 0.1, 1, 2, 4, 8, 10],
-                'epsilon': [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1],
-                'gamma': [1e-4, 1e-3, 1e-2, 1e-1, 1, 5]
-            },
-            cv=10,
-            n_jobs=-1,
-            scoring=make_scorer(error_fun, greater_is_better=False)
-        )
+        if(C is not None and epsilon is not None and gamma is not None):
+            self.model = SVR(kernel="rbf", C=C, epsilon=epsilon, gamma=gamma)
+        else:
+            self.model = SVR(kernel="rbf")
+            self.cross_validator = GridSearchCV(
+                estimator=self.model,
+                param_grid={
+                    'C': [0.05, 0.1, 1, 2, 4, 8, 10],
+                    'epsilon': [1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1],
+                    'gamma': [1e-4, 1e-3, 1e-2, 1e-1, 1, 5]
+                },
+                cv=10,
+                n_jobs=-1,
+                scoring=make_scorer(error_fun, greater_is_better=False)
+            )
 
     def __get_error_train__(self):
         if(self.error_train is None):
@@ -116,10 +123,11 @@ class Model_RBF_SVR(IModel):
         return self.yhat_test
 
     def __train__(self, X_train, Y_train):
-        grid_result = self.cross_validator.fit(X_train, Y_train)
-        best_params = grid_result.best_params_
-
-        self.model = SVR(kernel="rbf", C=best_params['C'], epsilon=best_params['epsilon'], gamma=best_params['gamma'])
+        if(self.cross_validator is not None):
+            grid_result = self.cross_validator.fit(X_train, Y_train)
+            best_params = grid_result.best_params_
+            self.model = SVR(kernel="rbf", C=best_params['C'], epsilon=best_params['epsilon'], gamma=best_params['gamma'])
+    
         self.model = self.model.fit(X_train, Y_train)
         yhat_train = self.model.predict(X_train)
         self.error_train = self.error_fun(Y_train, yhat_train)
