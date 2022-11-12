@@ -1,3 +1,7 @@
+import pandas as pd
+from src.models.regressor.linear_regression import Model_LinearRegression
+from src.performer.supervised_learning_performer import SlidingWindowPerformer
+from src.performer.train_test_performer import TrainTestPerformer
 from src.util.goal import ForecastingGoal
 from src.util.evaluation import ForecastErrorEvaluation
 from src.util.parameters import ModelsIperParameters
@@ -10,33 +14,63 @@ from src.validator.nn.trainer import NeuralNetworkTrainingParameters
 from src.validator.nn.trainer import GridSearch_ConvolutionalNeuralNetwork
 from src.validator.nn.trainer import GridSearch_LongShortTermNeuralNetwork
 
-class IPipeline():
-    def __execute__(self, series, goal: ForecastingGoal):
-        raise ValueError("Method not implemented")
-    
+from src.pipeline import IPipeline
+from test.util import save_performance_graph
+from test.util.test_suite import TestSuite
+
+
+class Test_ARLinearRegression(IPipeline):
     def __test_execute__(self, goal: ForecastingGoal):
-        raise ValueError("Method not implemented")
+        #Util Classes
+        ERROR_PERFORMER = ForecastErrorEvaluation(goal = goal)
+        test_suite = TestSuite()
 
-
-class Use_ARLinearRegression(IPipeline):
-    def __execute__(self, series, goal: ForecastingGoal):
+        #Model Iper-parameters    
         LINEAR_REGRESSION_IPER_PARAMETERS = ModelsIperParameters(
             FEATURE_LENGTH=[3,4,5,6,7,8,9,10,15,20]
         )
-        series = MinMaxTransformer.transform(series)
 
-        ERROR_PERFORMER = ForecastErrorEvaluation(goal = goal)
+        number_of_experiment = test_suite.__get_test_suite_size__()
         forecast_view, forecast_offset = goal.options()
+        testIdAutoincrement = 0
 
-        grid_searcher = GridSearchKFoldCV_LinearRegression(
-            series = series,
-            target_length = forecast_view,
-            target_offset = forecast_offset,
-            kfolds = 10
-        )
-        grid_searcher.search(LINEAR_REGRESSION_IPER_PARAMETERS, ERROR_PERFORMER)
-        loss, _, parameters, model = grid_searcher.get_best_params()
-        return model, parameters, loss
+        for ind_experiment in number_of_experiment:
+            series = test_suite.__get_numpy_test_series_from_index__(ind_experiment)
+            series = MinMaxTransformer.transform(series)
+            series_name = test_suite.__get_name_test_series_from_index__(ind_experiment)
+
+            for ind_feature in LINEAR_REGRESSION_IPER_PARAMETERS.get(ModelsIperParameters.FEATURE_LENGTH):
+                SWP = SlidingWindowPerformer(
+                    feature_length=ind_feature,
+                    target_length = forecast_view,
+                    target_offset = forecast_offset
+                )
+                _, X, Y = SWP.get(series)
+
+                TTP = TrainTestPerformer(portion_train = 0.8, random_sampling = True)
+                X_train, X_test, Y_train, Y_test = TTP.get(X, Y)
+                
+                model_linear_regression = Model_LinearRegression(input_size = X_train.shape[1])
+                yhat_train = model_linear_regression.__train__(X_train, Y_train)
+                yhat_test = model_linear_regression.__test__(X_test)
+
+                error_train = ERROR_PERFORMER.get(Y_train, yhat_train)
+                error_test = ERROR_PERFORMER.get(Y_test, yhat_test)
+                
+                save_performance_graph(
+                    id = testIdAutoincrement,
+                    series = series,
+                    y_train = Y_train,
+                    y_test = Y_test,
+                    series_name = series_name,
+                    error_train = error_train,
+                    error_test = error_test,
+                    yhat_train = yhat_train,
+                    yhat_test = yhat_test
+                )
+                testIdAutoincrement += 1
+
+
 
 class Use_ARSupportVectorRegressionRBF(IPipeline):
     def __execute__(self, series, goal:ForecastingGoal):
