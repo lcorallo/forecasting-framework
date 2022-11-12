@@ -1,5 +1,3 @@
-from calendar import EPOCH
-from models.IModel import IModel
 import numpy as np
 import torch
 from torch import nn, optim
@@ -130,7 +128,7 @@ class Model_ConvolutionalSemilinearNN():
         self.epochs = self.error_train.index(min(self.error_train))
 
         if(self.error_train[self.epochs] != self.error_train[-1]): #is not the last value of the array
-            self.model = CNNSemilinearPredictor(X_train.size()[1])
+            self.model = CNNSemilinearPredictor(X_train.size()[1], Y_train.size[1])
             optimizer = optim.Adam(self.model.parameters(), lr=0.001)
             self.error_train = []
             self.error_test = []

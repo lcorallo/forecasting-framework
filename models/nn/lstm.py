@@ -3,20 +3,22 @@ from torch import nn, optim
 
 class LSTMPredictor(nn.Module):
 
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, input_dim, output_dim, num_layers=2, hidden=128, dropout=.1):
         super(LSTMPredictor, self).__init__()
+        self.hidden = hidden
+        self.num_layers = num_layers
         
         self.input_dim = input_dim
         self.lstm = nn.LSTM(
             input_size = input_dim,
-            hidden_size = 128,
-            num_layers = 2,
-            dropout = .1
+            hidden_size = self.hidden,
+            num_layers = num_layers,
+            dropout = dropout
         )
-        self.linear = nn.Linear(in_features=128, out_features=output_dim)
+        self.linear = nn.Linear(in_features=self.hidden, out_features=output_dim)
 
-    def forward(self, sequences):
-        h0, c0 = torch.zeros((2, 128), dtype=torch.float32), torch.zeros((2, 128), dtype=torch.float32)
+    def forward(self, sequences, train=None):
+        h0, c0 = torch.zeros((self.num_layers, self.hidden), dtype=torch.float32), torch.zeros((self.num_layers, self.hidden), dtype=torch.float32)
         y_lstm, _ = self.lstm(sequences, (h0, c0))
         y_pred = self.linear(y_lstm)
         return y_pred
@@ -39,7 +41,10 @@ class Model_LSTM():
     MAX_EPOCHS = 900
     EARLY_STOP_DIFF = 0.005
 
-    def __init__(self, error_fun):
+    def __init__(self, error_fun, num_layers=2, dropout=.1, hidden=128):
+        self.num_layers = num_layers
+        self.dropout = dropout
+        self.hidden = hidden
         self.error_fun = error_fun
 
     def __get_error_train__(self):
@@ -70,7 +75,7 @@ class Model_LSTM():
 
 
     def __train__(self, X_train, Y_train, X_test, Y_test):
-        self.model = LSTMPredictor(input_dim=X_train.size()[1], output_dim=Y_train.size()[1])
+        self.model = LSTMPredictor(input_dim=X_train.size()[1], output_dim=Y_train.size()[1], num_layers=self.num_layers, dropout=self.dropout, hidden=self.hidden)
         optimizer = optim.Adam(self.model.parameters(), lr=0.001)
         self.error_train = []
         self.error_test = []

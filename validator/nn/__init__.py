@@ -1,1 +1,1 @@
-from .cnn import KFoldCrossValidation_ConvolutionalSemilinearNN
+from .trainer import Trainer_ConvolutionalNeuralNetwork
