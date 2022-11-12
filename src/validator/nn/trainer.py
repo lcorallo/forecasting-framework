@@ -16,7 +16,6 @@ class Trainer_NeuralNetwork():
       
     def _excute_early_stop_training(self, model, x, y, error_performer: ForecastErrorEvaluation):
         optimizer = optim.Adam(model.parameters(), lr=self.training_parameters.LEARNING_RATE)
-
         epochs_index = 0
         early_stop_condition = False
         loss_distribution = np.array([])
@@ -32,7 +31,6 @@ class Trainer_NeuralNetwork():
             loss.backward()
             optimizer.step()
             epochs_index += 1
- 
         return model, loss_distribution
 
     def _excute_classic_training(self, model, x, y, error_performer: ForecastErrorEvaluation):
@@ -72,7 +70,7 @@ class GridSearch_ConvolutionalNeuralNetwork():
         results = np.array(self._grid_search_result)
         min = results.T[0].min()
         index_min = np.where(results.T[0] == min)
-        return results[index_min][0][2], results[index_min][0][3]
+        return results[index_min][0][0], results[index_min][0][1], results[index_min][0][2]
 
     def __init__(self, series, target_length=1, target_offset=1, training_parameters = NeuralNetworkTrainingParameters()):
         self.series = series
@@ -150,8 +148,9 @@ class GridSearch_LongShortTermNeuralNetwork():
         results = np.array(self._grid_search_result)
         min = results.T[0].min()
         index_min = np.where(results.T[0] == min)
-        return results[index_min][0][2], results[index_min][0][3]
-
+        print(results[index_min])
+        return results[index_min][0][0], results[index_min][0][1], results[index_min][0][2]
+        
     def __init__(self, series, target_length=1, target_offset=1, training_parameters = NeuralNetworkTrainingParameters()):
         self.series = series
         self.target_length = target_length
@@ -193,7 +192,6 @@ class GridSearch_LongShortTermNeuralNetwork():
                             hidden = ind_hs,
                             dropout = ind_dropout
                         )
-                        
                         trainer = Trainer_NeuralNetwork(training_parameters = self.training_parameters)
 
                         model, _ = trainer.__train__(model = model, x = X_train, y = Y_train, error_performer = error_performer)

@@ -6,7 +6,7 @@ from src.performer.transformer import MinMaxTransformer
 from src.validator.regressor.linear_regression import GridSearchKFoldCV_LinearRegression
 from src.validator.regressor.svr import GridSearchKFoldCV_Linear_SVR
 from src.validator.regressor.svr import GridSearchKFoldCV_RBF_SVR
-from src.validator.nn.trainer import Trainer_NeuralNetwork
+from src.validator.nn.trainer import NeuralNetworkTrainingParameters
 from src.validator.nn.trainer import GridSearch_ConvolutionalNeuralNetwork
 from src.validator.nn.trainer import GridSearch_LongShortTermNeuralNetwork
 
@@ -113,7 +113,7 @@ class Use_ARConvolutionalNeuralNetwork(IPipeline):
             series = series,
             target_length = forecast_view,
             target_offset = forecast_offset,
-            training_parameters = Trainer_NeuralNetwork(EPOCHS = 900, EARLY_STOP = True, LEARNING_RATE = .001)
+            training_parameters = NeuralNetworkTrainingParameters(EPOCHS = 900, EARLY_STOP = True, LEARNING_RATE = .001)
         )
 
         grid_searcher.search(CNN_IPER_PARAMETERS, ERROR_PERFORMER)
@@ -139,7 +139,7 @@ class Use_ARLongShortTermMemoryNeuralNetwork(IPipeline):
             series = series,
             target_length = forecast_view,
             target_offset = forecast_offset,
-            training_parameters = Trainer_NeuralNetwork(EPOCHS = 900, EARLY_STOP = True, LEARNING_RATE = .001)
+            training_parameters = NeuralNetworkTrainingParameters(EPOCHS = 900, EARLY_STOP = True, LEARNING_RATE = .001)
         )
 
         grid_searcher.search(LSTM_IPER_PARAMETERS, ERROR_PERFORMER)

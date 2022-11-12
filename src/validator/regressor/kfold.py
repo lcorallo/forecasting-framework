@@ -14,7 +14,7 @@ class KFoldCrossValidation():
         cross_validation_results = np.array(self._cross_validation_results)
         min = cross_validation_results.T[0].min()
         index_min = np.where(cross_validation_results.T[0] == min)
-        return cross_validation_results[index_min][0][2], cross_validation_results[index_min][0][3]
+        return cross_validation_results[index_min][0][0], cross_validation_results[index_min][0][1], cross_validation_results[index_min][0][2], cross_validation_results[index_min][0][3]
 
     def _generate_train_validation_sets(self, X_train, Y_train): 
         kfold = KFold(n_splits=self.kfolds, shuffle=True, random_state=self._RANDOM_SEED)
