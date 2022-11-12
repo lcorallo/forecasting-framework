@@ -3,8 +3,7 @@ import numpy as np
 import torch
 
 from synthetic.test_suite import TestSuite
-from synthetic.util import min_max_transform
-from models.nn.cnn import Model_ConvolutionalSemilinearNN
+from src.models.nn.cnn import Model_ConvolutionalSemilinearNN
 
 
 class KFoldCrossValidation_ConvolutionalSemilinearNN():

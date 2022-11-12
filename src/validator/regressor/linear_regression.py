@@ -1,10 +1,10 @@
 import numpy as np
 
-from models.regressor.linear_regression import Model_LinearRegression
+from src.models.regressor.linear_regression import Model_LinearRegression
 from .kfold import KFoldCrossValidation
-from performer.supervised_learning_performer import SlidingWindowPerformer
-from util.parameters import ModelsIperParameters
-from util.evaluation import ForecastErrorEvaluation
+from src.performer.supervised_learning_performer import SlidingWindowPerformer
+from src.util.parameters import ModelsIperParameters
+from src.util.evaluation import ForecastErrorEvaluation
 
 class GridSearchKFoldCV_LinearRegression(KFoldCrossValidation):
 

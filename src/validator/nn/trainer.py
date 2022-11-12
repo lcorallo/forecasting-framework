@@ -2,14 +2,14 @@ import torch
 from torch import optim
 import numpy as np
 
-from models.nn.cnn import CNNSemilinearPredictor
-from models.nn.lstm import LSTMPredictor
-from performer.supervised_learning_performer import SlidingWindowPerformer
-from performer.train_test_performer import TrainTestPerformer
-from util.parameters import NeuralNetworkTrainingParameters, ModelsIperParameters
-from util.evaluation import ForecastErrorEvaluation
+from src.models.nn.cnn import CNNSemilinearPredictor
+from src.models.nn.lstm import LSTMPredictor
+from src.performer.supervised_learning_performer import SlidingWindowPerformer
+from src.performer.train_test_performer import TrainTestPerformer
+from src.util.parameters import NeuralNetworkTrainingParameters, ModelsIperParameters
+from src.util.evaluation import ForecastErrorEvaluation
 
-class Trainer_ConvolutionalNeuralNetwork():
+class Trainer_NeuralNetwork():
 
     def __init__(self, training_parameters: NeuralNetworkTrainingParameters = NeuralNetworkTrainingParameters):
         self.training_parameters = training_parameters
@@ -118,7 +118,7 @@ class GridSearch_ConvolutionalNeuralNetwork():
                             dropout = 0.2
                         )
                         
-                        trainer = Trainer_ConvolutionalNeuralNetwork(training_parameters = self.training_parameters)
+                        trainer = Trainer_NeuralNetwork(training_parameters = self.training_parameters)
 
                         model, _ = trainer.__train__(model = model, x = X_train, y = Y_train, error_performer = error_performer)
            
@@ -194,7 +194,7 @@ class GridSearch_LongShortTermNeuralNetwork():
                             dropout = ind_dropout
                         )
                         
-                        trainer = Trainer_ConvolutionalNeuralNetwork(training_parameters = self.training_parameters)
+                        trainer = Trainer_NeuralNetwork(training_parameters = self.training_parameters)
 
                         model, _ = trainer.__train__(model = model, x = X_train, y = Y_train, error_performer = error_performer)
             

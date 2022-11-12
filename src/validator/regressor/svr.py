@@ -1,14 +1,14 @@
 import numpy as np
 
-from models.regressor.svr import Model_Linear_SVR
-from models.regressor.svr import Model_RBF_SVR
+from src.models.regressor.svr import Model_Linear_SVR
+from src.models.regressor.svr import Model_RBF_SVR
 
 from .kfold import KFoldCrossValidation
 
-from performer.supervised_learning_performer import SlidingWindowPerformer
+from src.performer.supervised_learning_performer import SlidingWindowPerformer
 
-from util.parameters import ModelsIperParameters
-from util.evaluation import ForecastErrorEvaluation
+from src.util.parameters import ModelsIperParameters
+from src.util.evaluation import ForecastErrorEvaluation
 
 
 class GridSearchKFoldCV_Linear_SVR(KFoldCrossValidation):
