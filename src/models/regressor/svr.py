@@ -1,4 +1,4 @@
-from src.models.regressor.IRegressor import IRegressor
+from src.models.regressor.interface import IRegressor
 from sklearn.svm import SVR
 from sklearn.svm import LinearSVR
 

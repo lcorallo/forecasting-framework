@@ -80,7 +80,6 @@ class KFoldCrossValidation_ConvolutionalSemilinearNN():
                 "neurons_decision_making": ind_neurons,
                 "dropout": ind_dropout
               }
-              print([mean, std, params, model_nn_cnn])
               cross_validation_results.append([mean, std, params, model_nn_cnn])
     
     cross_validation_results = np.array(cross_validation_results)

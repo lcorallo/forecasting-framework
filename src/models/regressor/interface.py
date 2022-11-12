@@ -1,5 +1,4 @@
 class IRegressor():
-
     def __train__(self, X_train, Y_train):
         raise ValueError("Method not implemented")
 

@@ -148,7 +148,6 @@ class GridSearch_LongShortTermNeuralNetwork():
         results = np.array(self._grid_search_result)
         min = results.T[0].min()
         index_min = np.where(results.T[0] == min)
-        print(results[index_min])
         return results[index_min][0][0], results[index_min][0][1], results[index_min][0][2]
         
     def __init__(self, series, target_length=1, target_offset=1, training_parameters = NeuralNetworkTrainingParameters()):

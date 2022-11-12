@@ -7,7 +7,6 @@ class KFoldCrossValidation():
 
     def get_all_params(self):
         cross_validation_results = np.array(self._cross_validation_results)
-        print(cross_validation_results)
         return cross_validation_results[:, 2:4]
 
     def get_best_params(self):

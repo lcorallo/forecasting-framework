@@ -87,9 +87,6 @@ class Model_LSTM():
             train_loss = self.error_fun(Y_train, self.yhat_train)
             self.error_train.append(train_loss.item())
 
-            if(epoch_indx % 50 == 0 and
-                epoch_indx != 0):
-                print("EPOCH", epoch_indx);
             self.error_test.append(self.__test__(X_test=X_test, Y_test=Y_test))
             if(epoch_indx % 50 == 0 and
                 epoch_indx != 0 and

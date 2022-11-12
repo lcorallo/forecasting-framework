@@ -12,7 +12,7 @@ from src.validator.nn.trainer import GridSearch_LongShortTermNeuralNetwork
 
 class IPipeline():
     def __execute__(self, series, goal: ForecastingGoal):
-        raise "Method not implemented"
+        raise ValueError("Method not implemented")
 
 
 class Use_ARLinearRegression(IPipeline):
@@ -66,7 +66,7 @@ class Use_ARSupportVectorRegressionRBF(IPipeline):
         return model, parameters, loss
         
 class Use_ARSupportVectorRegressionLinear(IPipeline):
-    def execute(series, goal:ForecastingGoal):
+    def __execute__(self, series, goal:ForecastingGoal):
         # SVR_RBF_IPER_PARAMETERS = ModelsIperParameters(
         #     FEATURE_LENGTH=[3,4,5,6,7,8,9,10,15,20],
         #     C = [0.05, 0.1, 1, 2, 4, 8, 10],

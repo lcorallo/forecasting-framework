@@ -1,4 +1,4 @@
-from src.models.regressor.IRegressor import IRegressor
+from src.models.regressor.interface import IRegressor
 from sklearn.linear_model import LinearRegression
 
 #TODO: One Step Forecasting               V
