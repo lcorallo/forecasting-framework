@@ -1,3 +1,0 @@
-from .linear_regression import KFoldCrossValidation_LinearRegression
-from .svr import KFoldCrossValidation_Linear_SVR
-from .svr import KFoldCrossValidation_RBF_SVR

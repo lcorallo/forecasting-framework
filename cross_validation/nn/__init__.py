@@ -1,1 +1,0 @@
-from .cnn import KFoldCrossValidation_ConvolutionalSemilinearNN
