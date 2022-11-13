@@ -6,7 +6,7 @@ from src.performer.transformer import MinMaxTransformer
 from src.validator.regressor.linear_regression import GridSearchKFoldCV_LinearRegression
 from src.validator.regressor.svr import GridSearchKFoldCV_Linear_SVR
 from src.validator.regressor.svr import GridSearchKFoldCV_RBF_SVR
-from src.validator.nn.trainer import NeuralNetworkTrainingParameters
+from src.validator.nn.trainer import GridSearch_MultiLayerPerceptronNetwork, NeuralNetworkTrainingParameters
 from src.validator.nn.trainer import GridSearch_ConvolutionalNeuralNetwork
 from src.validator.nn.trainer import GridSearch_LongShortTermNeuralNetwork
 
@@ -21,7 +21,7 @@ class IPipeline():
 class Use_ARLinearRegression(IPipeline):
     def __execute__(self, series, goal: ForecastingGoal):
         LINEAR_REGRESSION_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[3,4,5,6,7,8,9,10,15,20]
+            FEATURE_LENGTH=[5]
         )
         series = MinMaxTransformer.transform(series)
 
@@ -47,7 +47,7 @@ class Use_ARSupportVectorRegressionRBF(IPipeline):
         #     GAMMA =  [1e-4, 1e-3, 1e-2, 1e-1, 1, 5]
         # )
         SVR_RBF_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[3,4],
+            FEATURE_LENGTH=[5],
             C = [0.05],
             EPSILON = [1e-6],
             GAMMA =  [1e-4]
@@ -77,7 +77,7 @@ class Use_ARSupportVectorRegressionLinear(IPipeline):
         #     FIT_INTERCEPT =  [True, False]
         # )
         SVR_LINEAR_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[3,4],
+            FEATURE_LENGTH=[5],
             C = [0.05],
             EPSILON = [1e-6],
             FIT_INTERCEPT =  [True]
@@ -137,7 +137,7 @@ class Use_ARLongShortTermMemoryNeuralNetwork(IPipeline):
 
         ERROR_PERFORMER = ForecastErrorEvaluation(goal = goal)
         forecast_view, forecast_offset = goal.options()
-        
+
         grid_searcher = GridSearch_LongShortTermNeuralNetwork(
             series = series,
             target_length = forecast_view,
@@ -146,5 +146,28 @@ class Use_ARLongShortTermMemoryNeuralNetwork(IPipeline):
         )
 
         grid_searcher.search(LSTM_IPER_PARAMETERS, ERROR_PERFORMER)
+        loss, parameters, model = grid_searcher.get_best_params()
+        return model, parameters, loss
+
+class Use_ARMultiLayerPerceptronNeuralNetwork(IPipeline):
+
+    def __execute__(self, series, goal: ForecastingGoal):
+        MLP_IPER_PARAMETERS = ModelsIperParameters(
+            FEATURE_LENGTH = [3,4,5,6,7,8,9,10,15,20]
+        )
+
+        series = MinMaxTransformer.transform(series)
+
+        ERROR_PERFORMER = ForecastErrorEvaluation(goal = goal)
+        forecast_view, forecast_offset = goal.options()
+
+        grid_searcher = GridSearch_MultiLayerPerceptronNetwork(
+            series = series,
+            target_length = forecast_view,
+            target_offset = forecast_offset,
+            training_parameters = NeuralNetworkTrainingParameters(EPOCHS = 900, EARLY_STOP = True, LEARNING_RATE = .001)
+        )
+
+        grid_searcher.search(MLP_IPER_PARAMETERS, ERROR_PERFORMER)
         loss, parameters, model = grid_searcher.get_best_params()
         return model, parameters, loss

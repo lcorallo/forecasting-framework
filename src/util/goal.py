@@ -33,3 +33,13 @@ class OneShotForecastingGoal(ForecastingGoal):
     
     def options(self):
         return super().options()
+
+class MultiStepForecastingGoal(ForecastingGoal):
+    def __init__(self, view=2, offset=1):
+        super().__init__("MULTI_STEP", view=view, offset=offset)
+    
+    def get(self):
+        return super().get()
+    
+    def options(self):
+        return super().options()

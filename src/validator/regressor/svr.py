@@ -2,6 +2,7 @@ import numpy as np
 
 from src.models.regressor.svr import Model_Linear_SVR
 from src.models.regressor.svr import Model_RBF_SVR
+from src.performer.train_test_performer import TrainTestPerformer
 
 from .kfold import KFoldCrossValidation
 
@@ -35,8 +36,10 @@ class GridSearchKFoldCV_Linear_SVR(KFoldCrossValidation):
               target_length=self.target_length,
               target_offset=self.target_offset
             )
+            TTP = TrainTestPerformer(portion_train = 0.8, random_sampling = True)
 
-            _, X_train, Y_train = SWP.get(self.series)
+            _, X, Y = SWP.get(self.series)
+            X_train, _, Y_train, _ = TTP.get(X, Y)
             Y_train = Y_train.ravel()
             X_trains, X_validations, Y_trains, Y_validations = self._generate_train_validation_sets(X_train, Y_train)
 
@@ -91,7 +94,10 @@ class GridSearchKFoldCV_RBF_SVR(KFoldCrossValidation):
               target_offset=self.target_offset
             )
 
-            _, X_train, Y_train = SWP.get(self.series)
+            TTP = TrainTestPerformer(portion_train = 0.8, random_sampling = True)
+
+            _, X, Y = SWP.get(self.series)
+            X_train, _, Y_train, _ = TTP.get(X, Y)
             Y_train = Y_train.ravel()
             X_trains, X_validations, Y_trains, Y_validations = self._generate_train_validation_sets(X_train, Y_train)
 

@@ -1,6 +1,7 @@
 import numpy as np
 
 from src.models.regressor.linear_regression import Model_LinearRegression
+from src.performer.train_test_performer import TrainTestPerformer
 from .kfold import KFoldCrossValidation
 from src.performer.supervised_learning_performer import SlidingWindowPerformer
 from src.util.parameters import ModelsIperParameters
@@ -24,8 +25,11 @@ class GridSearchKFoldCV_LinearRegression(KFoldCrossValidation):
         target_length=self.target_length,
         target_offset=self.target_offset
       )
+      TTP = TrainTestPerformer(portion_train = 0.8, random_sampling = True)
 
-      _, X_train, Y_train = SWP.get(self.series)
+      _, X, Y = SWP.get(self.series)
+      X_train, _, Y_train, _ = TTP.get(X, Y)
+
       X_trains, X_validations, Y_trains, Y_validations = self._generate_train_validation_sets(X_train, Y_train)
 
       validation_loss = np.array([])
