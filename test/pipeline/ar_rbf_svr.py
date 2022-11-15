@@ -28,9 +28,9 @@ class Test_ARSupportVectorRegressionRBF(IPipeline):
 
         #Model Iper-parameters
         SVR_RBF_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[3,4,5,6,7,8,9,10,15,20],
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10],
             C = [0.1, 2, 4, 10],
-            EPSILON = [1e-6, 1e-4],
+            EPSILON = [1e-6, 1e-4, 0.15],
             GAMMA =  [1e-4, 1e-3, 1e-2]
         )
 

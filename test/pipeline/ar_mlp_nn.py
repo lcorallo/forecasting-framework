@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from src.models.nn.mlp import MultiLayerPerceptronPredictor
 import torch
 from src.models.nn.cnn import CNNSemilinearPredictor
 
@@ -11,16 +12,16 @@ from src.util.parameters import ModelsIperParameters
 from src.performer.transformer import MinMaxTransformer
 
 from src.validator.nn.trainer import NeuralNetworkTrainingParameters, Trainer_NeuralNetwork
-from src.validator.nn.trainer import GridSearch_ConvolutionalNeuralNetwork
+from src.validator.nn.trainer import GridSearch_MultiLayerPerceptronNetwork
 
 from src.pipeline import IPipeline
 from test.util import save_performance_graph
 from test.util.test_suite import TestSuite
        
-class Test_ARConvolutionalNeuralNetwork(IPipeline):
+class Test_ARMultiLayerPerceptron(IPipeline):
     def __test_execute__(self):
         test_suite = TestSuite()
-        DIR = "test/output/ar_cnn_nn/"
+        DIR = "test/output/ar_mlp_nn/"
         FILE = "data.csv"
         OUTPUT = DIR + FILE
 
@@ -49,7 +50,7 @@ class Test_ARConvolutionalNeuralNetwork(IPipeline):
                 ERROR_PERFORMER = ForecastErrorEvaluation(goal = GOAL)
 
                 #Search Best AR Parameters
-                grid_searcher = GridSearch_ConvolutionalNeuralNetwork(
+                grid_searcher = GridSearch_MultiLayerPerceptronNetwork(
                     series = series,
                     target_length = forecast_view,
                     target_offset = forecast_offset,
@@ -83,6 +84,10 @@ class Test_ARConvolutionalNeuralNetwork(IPipeline):
                     conv2_kernel = 12,
                     layers_fc = 2,
                     linear = 180
+                )
+                model = MultiLayerPerceptronPredictor(
+                    input_dim = parameters[CNN_IPER_PARAMETERS.FEATURE_LENGTH],
+                    output_dim = 1
                 )
                         
                 trainer = Trainer_NeuralNetwork(training_parameters = training_parameters)

@@ -28,7 +28,7 @@ class Test_ARLinearRegression(IPipeline):
 
         #Model Iper-parameters
         LINEAR_REGRESSION_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[3,4,5,6,7,8,9,10,15,20]
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10]
         )
 
         #Goal Offset

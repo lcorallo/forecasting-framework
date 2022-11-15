@@ -37,7 +37,7 @@ class Test_ARLongShortTermMemoryNeuralNetwork(IPipeline):
         ])
 
         LSTM_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[3,4,5,6,7,8,9,10,15,20],
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10],
         )
         training_parameters = NeuralNetworkTrainingParameters(EPOCHS = 900, EARLY_STOP = True, LEARNING_RATE = .001)
 

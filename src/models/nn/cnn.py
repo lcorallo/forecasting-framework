@@ -29,8 +29,7 @@ class CNNSemilinearPredictor(INeuralNetwork):
             nn.Linear(feature_tensor.size()[1], 128),
             nn.ReLU(),
             nn.Dropout(p=0.5),
-            nn.Linear(128, n_out),
-            nn.ReLU()
+            nn.Linear(128, n_out)
         )
         
     def fe_stack(self, x):

@@ -27,9 +27,9 @@ class Trainer_NeuralNetwork():
             loss.backward()
             optimizer.step()
 
+            loss_distribution = np.append(loss_distribution, loss.item())            
             if(epochs_index > 200 and epochs_index % 50 == 0 and epochs_index != 0):
                 early_stop_condition = bool(np.abs(loss_distribution[-50] - loss_distribution[-1]) <= self.training_parameters.EARLY_STOP_DIFF)
-            loss_distribution = np.append(loss_distribution, loss.item())            
             epochs_index += 1
         return model, loss_distribution
 
@@ -249,4 +249,4 @@ class GridSearch_MultiLayerPerceptronNetwork():
                 },
                 model
             ])
-            print(loss.item(), ind_feature)
+            # print(loss.item(), ind_feature)
