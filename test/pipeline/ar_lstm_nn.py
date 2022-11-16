@@ -24,6 +24,11 @@ from test.util import save_performance_graph
 from test.util.test_suite import TestSuite
 
 
+def outputExperiment(OUTPUT, id, series_name, target_length, target_offset, ar_features, residual_train, error_train, residual_test, error_test):
+    with open(OUTPUT+"log.txt", 'a') as f:
+        result = ", ".join(map(str, list([id, series_name , target_length , target_offset , ar_features , residual_train , error_train , residual_test , error_test])))
+        print(result, file=f)
+
 class Test_ARLongShortTermMemoryNeuralNetwork(IPipeline):
         
     def __test_execute__(self):
@@ -116,6 +121,7 @@ class Test_ARLongShortTermMemoryNeuralNetwork(IPipeline):
                 Y_test = Y_test.detach().numpy()
                 yhat_test = yhat_test.detach().numpy()
                 yhat_series = yhat_series.detach().numpy()
+                outputExperiment(OUTPUT, testIdAutoincrement, series_name, 1, ind_target_of, parameters[LSTM_IPER_PARAMETERS.FEATURE_LENGTH], np.mean(np.abs(Y_train - yhat_train)), error_train, np.mean(np.abs(Y_test - yhat_test)), error_test)
                 new_row = {
                     'ID': testIdAutoincrement,
                     'Series': series_name,

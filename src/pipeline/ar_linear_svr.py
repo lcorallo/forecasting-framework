@@ -15,9 +15,9 @@ class Use_ARSupportVectorRegressionLinear():
         #     FIT_INTERCEPT =  [True, False]
         # )
         SVR_LINEAR_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[5],
-            C = [0.05],
-            EPSILON = [1e-6],
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10],
+            C = [1, 4, 8, 10],
+            EPSILON = [1e-6, 1e-5, 1e-4, 0.01],
             FIT_INTERCEPT =  [True]
         )
 

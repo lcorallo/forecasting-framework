@@ -10,10 +10,7 @@ class Use_ARLongShortTermMemoryNeuralNetwork(IPipeline):
 
     def __execute__(self, series, goal: ForecastingGoal):
         LSTM_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH = [5],
-            HIDDEN_STATE=[128],
-            RECURRENT_LAYERS=[2],
-            DROPOUT=[0.2]
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10],
         )
 
         series = MinMaxTransformer.transform(series)

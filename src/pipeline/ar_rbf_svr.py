@@ -15,10 +15,10 @@ class Use_ARSupportVectorRegressionRBF():
         #     GAMMA =  [1e-4, 1e-3, 1e-2, 1e-1, 1, 5]
         # )
         SVR_RBF_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[5],
-            C = [0.05],
-            EPSILON = [1e-6],
-            GAMMA =  [1e-4]
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10],
+            C = [1, 4, 8, 10],
+            EPSILON = [1e-6, 1e-5, 1e-4, 0.01],
+            GAMMA =  [1e-3, 1, 5]
         )
 
         series = MinMaxTransformer.transform(series)

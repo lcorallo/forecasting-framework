@@ -15,6 +15,11 @@ from src.pipeline import IPipeline
 from test.util import save_performance_graph
 from test.util.test_suite import TestSuite
 
+def outputExperiment(OUTPUT, id, series_name, target_length, target_offset, ar_features, c, epsilon, fit,  residual_train, error_train, residual_test, error_test):
+    with open(OUTPUT+"log.txt", 'a') as f:
+        result = ", ".join(map(str, list([id, series_name , target_length , target_offset , ar_features , c, epsilon, fit , residual_train , error_train , residual_test , error_test])))
+        print(result, file=f)
+
 class Test_ARSupportVectorRegressionLinear(IPipeline):
     def __test_execute__(self):
         test_suite = TestSuite()
@@ -29,9 +34,9 @@ class Test_ARSupportVectorRegressionLinear(IPipeline):
         #Model Iper-parameters
         SVR_LINEAR_IPER_PARAMETERS = ModelsIperParameters(
             FEATURE_LENGTH=[3,4,5,6,7,8,9,10],
-            C = [0.1, 2, 4, 10],
-            EPSILON = [1e-6, 1e-4, 0.15],
-            FIT_INTERCEPT =  [True, False]
+            C = [1, 4, 8, 10],
+            EPSILON = [1e-6, 1e-5, 1e-4, 0.01],
+            FIT_INTERCEPT =  [True]
         )
 
         #Goal Offset
@@ -81,6 +86,7 @@ class Test_ARSupportVectorRegressionLinear(IPipeline):
                 #Only for plotting:
                 yhat_series = model_svr_linear.__test__(X)
 
+                outputExperiment(OUTPUT, id, series_name, 1, ind_target_of, parameters[SVR_LINEAR_IPER_PARAMETERS.FEATURE_LENGTH], parameters[SVR_LINEAR_IPER_PARAMETERS.C], parameters[SVR_LINEAR_IPER_PARAMETERS.EPSILON], parameters[SVR_LINEAR_IPER_PARAMETERS.FIT_INTERCEPT],  np.mean(np.abs(Y_train - yhat_train)), error_train, np.mean(np.abs(Y_test - yhat_test)), error_test)
                 new_row = {
                     'ID': testIdAutoincrement,
                     'Series': series_name,

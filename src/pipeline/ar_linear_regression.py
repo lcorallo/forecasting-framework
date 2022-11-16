@@ -9,7 +9,7 @@ from src.validator.regressor.linear_regression import GridSearchKFoldCV_LinearRe
 class Use_ARLinearRegression(IPipeline):
     def __execute__(self, series, goal: ForecastingGoal):
         LINEAR_REGRESSION_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH=[5]
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10]
         )
         series = MinMaxTransformer.transform(series)
 

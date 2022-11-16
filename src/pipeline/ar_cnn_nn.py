@@ -10,10 +10,7 @@ class Use_ARConvolutionalNeuralNetwork(IPipeline):
     
     def __execute__(self, series, goal: ForecastingGoal):
         CNN_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH = [5],
-            LINEAR_LAYERS = [1],
-            NEURONS = [128],
-            DROPOUT = [0.5]
+            FEATURE_LENGTH=[3,4,5,6,7,8,9,10]
         )
         series = MinMaxTransformer.transform(series)
         
