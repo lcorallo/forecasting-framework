@@ -17,4 +17,11 @@ class ForecastErrorEvaluation():
     def get(self, y, yhat):
         if(self.goal.get() == "ONE_STEP"):
             return self.loss(y, yhat)
+        
+        if(self.goal.get() == "ONE_SHOT"):
+            if torch.is_tensor(y): return (self.loss(y, yhat))
+            temp_loss = []
+            for i in range(y.shape[1]):
+                temp_loss.append(self.loss(y.T[i], yhat.T[i]))
+            return np.mean(np.array(temp_loss))
         raise "Not Implemented"

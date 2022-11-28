@@ -5,11 +5,10 @@ import torch.nn.functional as F
 from .interface import INeuralNetwork
 
 class CNNSemilinearPredictor(INeuralNetwork):
-    def __init__(self, n_inp, layers_fc = 2, dropout=0.2, linear = 180, conv1_out = 6, conv1_kernel = 36, conv2_kernel = 12, n_out = 1):
+    def __init__(self, n_inp, layers_fc = 2, linear = 180, conv1_out = 6, conv1_kernel = 36, conv2_kernel = 12, n_out = 1):
         self.input_size = n_inp
         self.layers_fc = layers_fc
         self.linear = linear
-        self.dropout = dropout
         
         super(CNNSemilinearPredictor, self).__init__()
         self.pool = nn.MaxPool1d(kernel_size=2)
@@ -26,12 +25,12 @@ class CNNSemilinearPredictor(INeuralNetwork):
             padding = conv2_kernel - 1
         )
         feature_tensor = self.fe_stack(torch.Tensor([[0]*n_inp]))
-        self.semilinear_layers = []
-        self.semilinear_layers.append(nn.Linear(feature_tensor.size()[1], linear))
-        for i in range(layers_fc - 2):
-            self.semilinear_layers.append(nn.Linear(linear, linear))        
-        self.semilinear_layers.append(nn.Linear(linear, n_out))
-        self.dropout = dropout
+        self.dm_stack = nn.Sequential(
+            nn.Linear(feature_tensor.size()[1], 128),
+            nn.ReLU(),
+            nn.Dropout(p=0.5),
+            nn.Linear(128, n_out)
+        )
         
     def fe_stack(self, x):
         x = x.unsqueeze(1)
@@ -40,21 +39,13 @@ class CNNSemilinearPredictor(INeuralNetwork):
         x = x.flatten(start_dim = 1)
         return x
 
-    def dm_stack(self, x, train = False):
-        y = x
-        for i in range(len(self.semilinear_layers)):
-            y = F.relu(self.semilinear_layers[i](y))
-            if(train is True and i  > 0 and i % 2 == 0):
-                y = F.dropout(y, p=self.dropout)
-        return y
-
-    def forward(self, x, train=False):
+    def forward(self, x):
         x = self.fe_stack(x)
-        y = self.dm_stack(x, train)
+        y = self.dm_stack(x)
         return y
     
     def __identify__(self):
-        return "AR_ConvolutionalNeuralNetwork("+str(self.input_size)+")("+str(self.layers_fc)+","+str(self.linear)+","+str(self.dropout)+");"
+        return "AR_ConvolutionalNeuralNetwork("+str(self.input_size)+")("+str(self.layers_fc)+","+str(self.linear)+");"
 
 
 #TODO: One Step Forecasting               V
@@ -109,7 +100,6 @@ class Model_ConvolutionalSemilinearNN():
         self.model = CNNSemilinearPredictor(
             X_train.size()[1], n_out=Y_train.size()[1],
             layers_fc=self.semilinear_layers,
-            dropout=self.dropout,
             linear=self.neurons)
         optimizer = optim.Adam(self.model.parameters(), lr=0.001)
         self.error_train = []

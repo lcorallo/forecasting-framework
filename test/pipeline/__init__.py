@@ -1,0 +1,5 @@
+from .ar_linear_regression import Test_ARLinearRegression
+from .ar_linear_svr import Test_ARSupportVectorRegressionLinear
+from .ar_rbf_svr import Test_ARSupportVectorRegressionRBF
+from .ar_cnn_nn import Test_ARConvolutionalNeuralNetwork
+from .ar_lstm_nn import Test_ARLongShortTermMemoryNeuralNetwork
