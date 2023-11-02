@@ -28,7 +28,7 @@ class Trainer_NeuralNetwork():
             optimizer.step()
 
             loss_distribution = np.append(loss_distribution, loss.item())            
-            if(epochs_index > 200 and epochs_index % 50 == 0 and epochs_index != 0):
+            if(epochs_index > 400 and epochs_index % 50 == 0 and epochs_index != 0):
                 early_stop_condition = bool(np.abs(loss_distribution[-50] - loss_distribution[-1]) <= self.training_parameters.EARLY_STOP_DIFF)
             epochs_index += 1
         return model, loss_distribution
@@ -223,7 +223,7 @@ class GridSearch_MultiLayerPerceptronNetwork():
                 target_offset=self.target_offset
             )
 
-            TTP = TrainTestPerformer(portion_train = 0.8, random_sampling = True)
+            TTP = TrainTestPerformer(portion_train = 0.7, random_sampling = True)
             _, x, y = SWP.get(self.series)
 
             X_train, X_test, Y_train, Y_test = TTP.get(x, y)

@@ -10,7 +10,8 @@ class Use_ARMultiLayerPerceptronNeuralNetwork(IPipeline):
 
     def __execute__(self, series, goal: ForecastingGoal):
         MLP_IPER_PARAMETERS = ModelsIperParameters(
-            FEATURE_LENGTH = [3,4,5,6,7,8,9,10,15,20]
+            # FEATURE_LENGTH = [3,4,5,6,7,8,9,10,15,20]
+            FEATURE_LENGTH=[1,2,3,4,5,6,7,8,9,10,11,12,13,14]
         )
 
         series = MinMaxTransformer.transform(series)

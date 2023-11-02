@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 class TestSuite:
-  __REMOTE_URL = "https://raw.githubusercontent.com/lcorallo/forecasting-framework/synthetic_dataset_analysis/synthetic/dataset.csv"
+  __REMOTE_URL = "https://raw.githubusercontent.com/lcorallo/forecasting-framework/master/synthetic_dataset/dataset_model_testing.csv"
   __SYNTHETIC_SERIES = []
   __RANDOM_SEED_TRAIN_TEST_SET = 1
 

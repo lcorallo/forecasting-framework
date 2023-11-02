@@ -1,0 +1,16 @@
+experiment_1, AR_NN_MultiLayerPerceptron, 0.13925004, 1, 4, 387f4271-70ef-11ed-a7c1-2cf05d74dbcb
+experiment_1, AR_NN_MultiLayerPerceptron, 0.13365161, 1, 4, 74ad6e5d-70ef-11ed-bdf9-2cf05d74dbcb
+experiment_1, AR_NN_MultiLayerPerceptron, 0.13365161, 1, 4, 883ea2fa-70ef-11ed-a796-2cf05d74dbcb
+experiment_1, AR_LinearRegression, 0.13834138, 3, 1, 022df43c-70f0-11ed-902f-2cf05d74dbcb
+experiment_1, AR_Linear_SupportVectorRegression, 0.1786120061139182, 3, 1, 04c2a9e2-70f0-11ed-829d-2cf05d74dbcb
+experiment_1, AR_NN_MultiLayerPerceptron, 0.19534306, 3, 4, 13287fea-70f0-11ed-9b5a-2cf05d74dbcb
+experiment_1, AR_NN_MultiLayerPerceptron, 0.19534306, 3, 4, 1f213b96-70f0-11ed-8ec6-2cf05d74dbcb
+experiment_1, AR_LinearRegression, 0.1383414, 3, 1, 0838bdb2-78db-11ee-bf3f-a1f0cf21f636
+experiment_1, AR_Linear_SupportVectorRegression, 0.17945153476683368, 3, 1, 16475b9e-78db-11ee-ba7c-a1f0cf21f636
+experiment_1, AR_NN_MultiLayerPerceptron, tensor(0.1815), 3, 1, 29383579-78db-11ee-bf14-a1f0cf21f636
+experiment_1, AR_NN_LongShortMemory, tensor(0.2150), 3, 1, 74e5261a-78db-11ee-86ae-a1f0cf21f636
+experiment_1, AR_NN_ConvolutionalNeuralNetwork, tensor(0.1688), 3, 1, 905685e8-78db-11ee-8a8f-a1f0cf21f636
+experiment_1, AR_LinearRegression, 0.13536988938061476, 1, 4, 9dd4ce8d-78db-11ee-8d76-a1f0cf21f636
+experiment_1, AR_NN_MultiLayerPerceptron, 0.1463844, 1, 4, adb99735-78db-11ee-9e93-a1f0cf21f636
+experiment_1, AR_NN_ConvolutionalNeuralNetwork, 0.1403828, 1, 4, c3592fe8-78db-11ee-bc41-a1f0cf21f636
+experiment_1, AR_NN_LongShortMemory, 0.14120415, 1, 4, 06b88a29-78dc-11ee-ae27-a1f0cf21f636
